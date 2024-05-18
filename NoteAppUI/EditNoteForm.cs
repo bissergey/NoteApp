@@ -17,6 +17,7 @@ namespace NoteAppUI
         /// <summary>
         /// Текущая заметка для редактирования/создания.
         /// </summary>
+        //
         public Note CurrentNote { get; set; } 
 
         /// <summary>
