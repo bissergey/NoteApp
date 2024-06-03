@@ -27,6 +27,9 @@ namespace NoteAppUI
         /// </summary>
         private List<Note> Notes { get; set; }
 
+        private Note CurrentNote { get; set; }
+
+        private List<Note> ListCurrentNote { get; set; }
         /// <summary>
         /// Список контактов по категории
         /// </summary>
@@ -48,6 +51,10 @@ namespace NoteAppUI
             UpdateNotes(CategoriesedNotes);
             ShowCategoryCombo.Text = "All";
             UpdateNotes(Notes);
+            path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "current.json");
+            ListCurrentNote = ProjectManager.LoadFromFile(path);
+            CurrentNote = ListCurrentNote[0];
+            UpdateNoteInformation(ListCurrentNote[0]);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -138,6 +145,7 @@ namespace NoteAppUI
                     if (index >= 0)
                     {
                         UpdateNoteInformation(CategoriesedNotes[index]);
+                        CurrentNote = CategoriesedNotes[index];
                     }
                     UpdateNoteInformation(CategoriesedNotes[index]);
                 }
@@ -268,6 +276,14 @@ namespace NoteAppUI
         private void textBoxText_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            List<Note> currentNote = new List<Note>();
+            currentNote.Add(CurrentNote);
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "current.json");
+            ProjectManager.SaveToFile(currentNote, path);
         }
     }
 }
