@@ -159,6 +159,7 @@
             this.textBoxText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxText.Size = new System.Drawing.Size(766, 621);
             this.textBoxText.TabIndex = 7;
+            this.textBoxText.TextChanged += new System.EventHandler(this.textBoxText_TextChanged);
             // 
             // dateTimePickerModified
             // 
@@ -243,7 +244,6 @@
             this.editToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 2, 0, 2);
             this.menuStrip1.Size = new System.Drawing.Size(1233, 33);
             this.menuStrip1.TabIndex = 2;
@@ -278,7 +278,7 @@
             // addNoteToolStripMenuItem
             // 
             this.addNoteToolStripMenuItem.Name = "addNoteToolStripMenuItem";
-            this.addNoteToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.addNoteToolStripMenuItem.Size = new System.Drawing.Size(217, 34);
             this.addNoteToolStripMenuItem.Text = "AddNote";
             this.addNoteToolStripMenuItem.Click += new System.EventHandler(this.AddNote_Click);
             // 
@@ -292,7 +292,7 @@
             // removeNoteToolStripMenuItem
             // 
             this.removeNoteToolStripMenuItem.Name = "removeNoteToolStripMenuItem";
-            this.removeNoteToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.removeNoteToolStripMenuItem.Size = new System.Drawing.Size(217, 34);
             this.removeNoteToolStripMenuItem.Text = "RemoveNote";
             this.removeNoteToolStripMenuItem.Click += new System.EventHandler(this.DeleteNote_Click);
             // 

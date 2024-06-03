@@ -42,8 +42,11 @@ namespace NoteAppUI
             ShowCategoryCombo.Items.Add(NoteCategories.ЗдоровьеИСпорт);
             ShowCategoryCombo.Items.Add(NoteCategories.Дом);
             ShowCategoryCombo.Items.Add(NoteCategories.Финансы);
+            ShowCategoryCombo.Items.Add("All");
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "notes.json");
-            Notes = ProjectManager.LoadFromFile(path);
+            CategoriesedNotes = Categoriesed.CategoriesedNotes(Notes);
+            UpdateNotes(CategoriesedNotes);
+            ShowCategoryCombo.Text = "All";
             UpdateNotes(Notes);
         }
 
@@ -88,10 +91,10 @@ namespace NoteAppUI
             addForm.ShowDialog();
             if (addForm.DialogResult == DialogResult.OK)
             {
-                Notes.Add(TransferNote.Data);
                 var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "notes.json");
                 ProjectManager.SaveToFile(Notes, path);
                 UpdateNotes(Notes);
+                UpdateNotes(CategoriesedNotes);
             }
         }
 
@@ -130,20 +133,14 @@ namespace NoteAppUI
         private void NotesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             var index = NotesListBox.SelectedIndex;
-            if (ShowCategoryCombo.Text == string.Empty)
-            {
                 if (index >= 0)
                 {
-                    UpdateNoteInformation(Notes[index]);
-                }
-            }
-            else
-            {
-                if (index >= 0)
-                {
+                    if (index >= 0)
+                    {
+                        UpdateNoteInformation(CategoriesedNotes[index]);
+                    }
                     UpdateNoteInformation(CategoriesedNotes[index]);
                 }
-            }
         }
 
         /// <summary>
@@ -160,7 +157,7 @@ namespace NoteAppUI
             }
             else
             {
-                dateTimePickerCreated.Value = DateTime.Now;
+                dateTimePickerCreated.Value = CategoriesedNotes[index].Created;
             }
         }
 
@@ -178,7 +175,7 @@ namespace NoteAppUI
             }
             else
             {
-                dateTimePickerModified.Value = DateTime.Now;
+                dateTimePickerModified.Value = CategoriesedNotes[index].LastUpdated;
             }
         }
 
@@ -200,7 +197,7 @@ namespace NoteAppUI
                     Notes[index] = TransferNote.Data;
                     var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "notes.json");
                     ProjectManager.SaveToFile(Notes, path);
-                    UpdateNotes(Notes);
+                    UpdateNotes(CategoriesedNotes);
                     NotesListBox.SelectedIndex = index;
                 }
             }
@@ -231,7 +228,7 @@ namespace NoteAppUI
                     Notes.RemoveAt(index);
                     var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "notes.json");
                     ProjectManager.SaveToFile(Notes, path);
-                    UpdateNotes(Notes);
+                    UpdateNotes(CategoriesedNotes);
                     NotesListBox.SelectedIndex = -1;
                     labelName.Text = String.Empty;
                     labelCurentCategory.Text = String.Empty;
@@ -256,15 +253,21 @@ namespace NoteAppUI
         private void ShowCategoryCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             var mask = ShowCategoryCombo.Text;
-            if (mask == string.Empty)
+            if (mask == "All")
             {
                 UpdateNotes(Notes);
+                CategoriesedNotes = Categoriesed.CategoriesedNotes(Notes);
+                UpdateNotes(CategoriesedNotes);
             }
             else
             {
                 CategoriesedNotes = Categoriesed.CategoriesedNotes(Notes, mask);
                 UpdateNotes(CategoriesedNotes);
             }
+        }
+        private void textBoxText_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
